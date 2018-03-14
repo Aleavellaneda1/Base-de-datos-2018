@@ -1,8 +1,54 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 CREATE TABLE IF NOT EXISTS rubro(
-	rubro_id int(11) NOT NULL AUTO_INCREMENT,
+	rubro_id int NOT NULL AUTO_INCREMENT,
 	rubro_desc char(30),
 	CONSTRAINT pk_rubro PRIMARY KEY (rubro_id)
 );	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 CREATE TABLE IF NOT EXISTS articulo(
 	art_id int(11) NOT NULL AUTO_INCREMENT,
@@ -133,6 +179,24 @@ INSERT INTO `rubro` (`rubro_id`, `rubro_desc`) VALUES
 (18,'Industrias y Oficinas'),
 (19,'Instrumentos Musicales'),
 (20,'Joyas y Relojes');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 INSERT INTO `articulo`(`art_id`, `art_desc`, `rubro_id`, `art_prec_compra`,`art_prec_vta`, `art_stock`, `art_stock_min`) VALUES 
