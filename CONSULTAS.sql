@@ -16,20 +16,12 @@ SELECT 	pto_vta_descr as 'Punto de venta',
 		fac_cab_id as 'Factura numero',
 		fac_cab_monto_bruto as 'Factura monto bruto'
 		FROM 
-		pto_vta INNER JOIN fac_cab  ON  pto_vta.pto_vta_id = fac_cab.pto_vta
+		pto_vta INNER JOIN fac_cab  ON  pto_vta.pto_vta_id = fac_cab.pto_vta_id
 				INNER JOIN vendedor on vendedor.vend_id = fac_cab.vend_id
 		WHERE
 		vendedor.vend_apellido="FERNANDEZ" and
 		vendedor.vend_nombres="ADRIANA" and
 		fac_cab.fac_cab_fecha ="2017-3-7";
-
-
-
-
-
-
-
-
 
 # Ejercicio 3.C
 # Listar los totales diarios de ventas que se realizaron en Enero del 2016. Por cada día de venta debe salir un 
@@ -38,13 +30,11 @@ SELECT 	pto_vta_descr as 'Punto de venta',
 # fecha retorna el numero correspondiente al día de la fecha. Las columnas deben tener los siguientes nombres: Día, 
 # Bruto, Iva, Neto y Cant. Facturas. 
 
-SELECT fac_cab_fecha as 'Dia', fac_cab_monto_bruto as 'Bruto',fac_cab_iva as 'Iva' 'Cant.' 'Facturas' FROM 
-
-FROM 
-		fac_cab INNER JOIN fac_det  ON  fac_cab.fac_cab_id = fac_det.fac_cab_id
-
-fac_cab WHERE fac_cab_fecha >= '2016-01-01'
-AND fac_cab_fecha <= '2016-01-31'
+SELECT fac_cab_fecha as "Dia",  fac_cab_monto_bruto as "Bruto"
+		FROM 
+		fac_cab 
+		WHERE fac_cab_fecha >= '2016-01-01'
+		AND fac_cab_fecha <= '2016-01-31' ORDER BY fac_cab_fecha DESC
 
 
 # Ejercicio 3.D
@@ -58,6 +48,15 @@ AND fac_cab_fecha <= '2016-01-31'
 
 
 
+
+
+
+
+
+SELECT vend_nombres as "Nombres", vend_apellido as "Apellidos", vend_porc_comis as "concepto de comisiones por ventas"
+
+FROM
+vendedor
 
 
 
@@ -110,8 +109,11 @@ WHERE
 # Listar los clientes que viven en 'Misiones' a los cuales no se les vendió durante el año 2015 
 # (Misiones es el nombre de la provincia y no el cogido). 
 
-
-
+SELECT * 
+FROM
+cliente INNER JOIN domicilio on cliente.clie_id = domicilio.dom_id
+		INNER JOIN localidad on domicilio.dom_id = localidad.loc_id
+		INNER JOIN provincia on localidad.prov_id = provincia.prov_id
 
 
 
@@ -170,7 +172,7 @@ WHERE
 
 # Ejercicio 3.N
 # Aumentar el precio de los artículos cuya existencia sea menor al stock mínimo. 
-SELECT art_prec_vta, art_prec_vta +100  FROM articulo WHERE  art_stock < art_stock_min;
+SELECT art_prec_vta as "precio original" , art_prec_vta +100 as "precio actualizado( mas 100 pesos) " FROM articulo WHERE  art_stock < art_stock_min;
 
 
 
@@ -184,3 +186,22 @@ SELECT art_prec_vta, art_prec_vta +100  FROM articulo WHERE  art_stock < art_sto
 # determinado y en el atributo pesos_vendidos se quiere almacenar la suma de los montos netos de las facturas 
 # que corresponden a cada provincia en un año y mes determinado. Se pide poblar la tabla con los datos 
 # correspondientes al año 2015 asumiendo que dicha tabla no tiene aun valores para el año 2015.
+
+
+
+
+
+
+
+SELECT * 
+FROM
+
+
+
+		vendedor INNER JOIN fac_cab on vendedor.vend_id = fac_cab.vend_id
+ 		 INNER JOIN cliente on fac_cab.clie_id = cliente.clie_id
+		 INNER JOIN domicilio on cliente.clie_id = domicilio.dom_id
+		 INNER JOIN localidad on domicilio.dom_id = localidad.loc_id
+		 INNER JOIN provincia on localidad.prov_id = provincia.prov_id
+
+

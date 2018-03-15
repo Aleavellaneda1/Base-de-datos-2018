@@ -63,25 +63,28 @@ CREATE TABLE IF NOT EXISTS cliente(
 
 
 CREATE TABLE IF NOT EXISTS fac_cab(
-	fac_cab_id int(11) NOT NULL, #factura numero
+	fac_cab_id int NOT NULL AUTO_INCREMENT,   #factura numero
 	fac_cab_fecha date NOT NULL, 
 	fac_cab_monto_bruto decimal(5,2),  
 	fac_cab_iva decimal(5,2),
 	clie_id int, 
 	vend_id int, 
 	pto_vta_id int NOT NULL, 
-	CONSTRAINT pk_fac_cab PRIMARY KEY(pto_vta_id,fac_cab_id,fac_cab_fecha),
+	CONSTRAINT pk_fac_cab PRIMARY KEY (fac_cab_id),
 	CONSTRAINT fk_pto_vta FOREIGN KEY (pto_vta_id) REFERENCES pto_vta(pto_vta_id),
 	CONSTRAINT fk_clie_id FOREIGN KEY (clie_id) REFERENCES cliente(clie_id),
-	CONSTRAINT fk_vend_id FOREIGN KEY (vend_id) REFERENCES vendedor(vend_id)
-	
+	CONSTRAINT fk_vend_id FOREIGN KEY (vend_id) REFERENCES vendedor(vend_id)	
 );
 
-
- create table vehiculos(
-  patente char(6) not null,
-  tipo char(4),
-  horallegada time not null,
-  horasalida time,
-  primary key(patente,horallegada)
- );
+CREATE TABLE IF NOT EXISTS fac_det(
+	fac_det_id int NOT NULL, 
+	fac_det_cant int, 
+	fac_det_art_precio decimal(5,2),
+	art_id int,
+	fac_cab_id int,
+	pto_vta_id int ,
+	CONSTRAINT pk_fac_det PRIMARY KEY (fac_det_id),
+	CONSTRAINT fk_fac_cab_id FOREIGN KEY (fac_cab_id) REFERENCES fac_cab(fac_cab_id),
+	CONSTRAINT fk_art_id FOREIGN KEY (art_id) REFERENCES articulo(art_id),
+	CONSTRAINT fk_pto_vta_id FOREIGN KEY (pto_vta_id) REFERENCES pto_vta(pto_vta_id)
+);

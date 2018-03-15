@@ -1,163 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-CREATE TABLE IF NOT EXISTS rubro(
-	rubro_id int NOT NULL AUTO_INCREMENT,
-	rubro_desc char(30),
-	CONSTRAINT pk_rubro PRIMARY KEY (rubro_id)
-);	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-CREATE TABLE IF NOT EXISTS articulo(
-	art_id int(11) NOT NULL AUTO_INCREMENT,
-	art_desc char(30), 
-	rubro_id int, 
-	art_prec_compra decimal(5,2), 
-	art_prec_vta decimal(5,2), 
-	art_stock int, 
-	art_stock_min int,
-	CONSTRAINT pk_articulo PRIMARY KEY (art_id),
-	CONSTRAINT fk_articulo FOREIGN KEY (rubro_id) REFERENCES rubro(rubro_id)
-);
-
-
-CREATE TABLE IF NOT EXISTS pto_vta(
- 	pto_vta_id int(11) NOT NULL AUTO_INCREMENT,
-  	pto_vta_descr varchar(50),
-  	PRIMARY KEY (pto_vta_id)
-);
-
-CREATE TABLE IF NOT EXISTS provincia(
-	prov_id int,
-	prov_desc char(70),
-	CONSTRAINT pk_provincia PRIMARY KEY (prov_id)
-);
-
-CREATE TABLE IF NOT EXISTS vendedor(
-	vend_id int(11) NOT NULL AUTO_INCREMENT,
-	vend_apellido char(30), 
-	vend_nombres char(30), 
-	vend_porc_comis decimal(5,2),
-	CONSTRAINT pk_vendedor PRIMARY KEY (vend_id)
-);
-
-CREATE TABLE IF NOT EXISTS localidad(
-  	loc_id int(11) NOT NULL AUTO_INCREMENT,
-  	loc_des varchar(50),
-  	prov_id int,
-	CONSTRAINT pk_localidad PRIMARY KEY (loc_id),
-  	CONSTRAINT fk_provincia FOREIGN KEY (prov_id) REFERENCES provincia(prov_id)
-);
-
-CREATE TABLE IF NOT EXISTS domicilio (
-	dom_id int(11) NOT NULL AUTO_INCREMENT,
-	dom_calle char(50),
-	loc_id int,
-	CONSTRAINT pk_domicilio PRIMARY KEY (dom_id),
-	CONSTRAINT fk_localidad FOREIGN key (loc_id) REFERENCES localidad(loc_id)
-);
-
-CREATE TABLE IF NOT EXISTS cliente(
-	clie_id int(11) NOT NULL AUTO_INCREMENT,
-	clie_razon char(40), 
-	clie_nombre char(40), 
-	dom_id int, 
-	CONSTRAINT pk_clientes PRIMARY KEY (clie_id),
-	CONSTRAINT fk_domicilio FOREIGN KEY (dom_id) REFERENCES domicilio(dom_id)
-);
-
-CREATE TABLE IF NOT EXISTS cliente(
-	clie_id int(11) NOT NULL AUTO_INCREMENT,
-	clie_razon char(40), 
-	clie_nombre char(40), 
-	dom_id int, 
-	CONSTRAINT pk_clientes PRIMARY KEY (clie_id),
-	CONSTRAINT fk_domicilio FOREIGN KEY (dom_id) REFERENCES domicilio(dom_id)
-);
-
-CREATE TABLE IF NOT EXISTS fac_cab(
-	fac_cab_id int(11) NOT NULL AUTO_INCREMENT, #factura numero
-	fac_cab_fecha date, 
-	fac_cab_monto_bruto decimal(5,2),  
-	fac_cab_iva decimal(5,2),
-	clie_id int, 
-	vend_id int, 
-	pto_vta int, 
-	CONSTRAINT pk_fac_cab PRIMARY KEY(fac_cab_id),
-	CONSTRAINT fk_pto_vta FOREIGN KEY (pto_vta) REFERENCES pto_vta(pto_vta_id),
-	CONSTRAINT fk_clie_id FOREIGN KEY (clie_id) REFERENCES cliente(clie_id),
-	CONSTRAINT fk_vend_id FOREIGN KEY (vend_id) REFERENCES vendedor(vend_id)
-);
-
-CREATE TABLE IF NOT EXISTS fac_det(
-	fac_det_id int(11) NOT NULL AUTO_INCREMENT, #es la clave primaria 
-	fac_det_cant int, 
-	art_id int,
-	fac_cab_id int,
-	CONSTRAINT pk_fac_det PRIMARY KEY (fac_det_id),
-	CONSTRAINT fk_art_id FOREIGN KEY (art_id) REFERENCES articulo(art_id),
-	CONSTRAINT fk_fac_cab_id FOREIGN KEY (fac_cab_id) REFERENCES fac_cab(fac_cab_id)
-);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 INSERT INTO `rubro` (`rubro_id`, `rubro_desc`) VALUES
 (1,'Alimentos y Bebidas'),
 (2,'Animales y Mascotas'),
@@ -179,25 +19,6 @@ INSERT INTO `rubro` (`rubro_id`, `rubro_desc`) VALUES
 (18,'Industrias y Oficinas'),
 (19,'Instrumentos Musicales'),
 (20,'Joyas y Relojes');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 INSERT INTO `articulo`(`art_id`, `art_desc`, `rubro_id`, `art_prec_compra`,`art_prec_vta`, `art_stock`, `art_stock_min`) VALUES 
 (1, 'Taza', '15', '25,57', '28,127', '155', '30'),
@@ -498,15 +319,6 @@ INSERT INTO `articulo`(`art_id`, `art_desc`, `rubro_id`, `art_prec_compra`,`art_
 (296, 'Cuadro lapiz digital', '1', '82,3', '90,53', '358', '30'),
 (297, 'Remera spum', '12', '56,47', '62,117', '447', '30');
 
-
-
-
-
-
-
-
-
-
 INSERT INTO `vendedor`(`vend_id`, `vend_apellido`, `vend_nombres`, `vend_porc_comis`) VALUES 
 (1,	'ARANDA', '	MIRTA', '10,00'),
 (2,	'SOTO', 'RODRIGO', '10,00'),
@@ -788,7 +600,7 @@ INSERT INTO `pto_vta`(`pto_vta_id`, `pto_vta_descr`) VALUES
 (10,'Candelaria 2'),
 (11,'Cordoba 2');
 
-INSERT INTO `fac_cab`(`fac_cab_id`, `fac_cab_fecha`, `fac_cab_monto_bruto`, `fac_cab_iva`, `clie_id`, `vend_id`, `pto_vta`) VALUES
+INSERT INTO `fac_cab`(`fac_cab_id`, `fac_cab_fecha`, `fac_cab_monto_bruto`, `fac_cab_iva`, `clie_id`, `vend_id`, `pto_vta_id`) VALUES
 (1, '2017-9-28', '375,62', '7,88802', '41', '5', '1'),
 (2, '2016-7-12', '300,38', '6,30798', '95', '2', '4'),
 (3, '2016-7-21', '49,45', '1,03845', '83', '6', '5'),
