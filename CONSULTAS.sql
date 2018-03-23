@@ -30,11 +30,13 @@ SELECT 	pto_vta_descr as 'Punto de venta',
 # fecha retorna el numero correspondiente al día de la fecha. Las columnas deben tener los siguientes nombres: Día, 
 # Bruto, Iva, Neto y Cant. Facturas. 
 
-SELECT fac_cab_fecha as "Dia",  fac_cab_monto_bruto as "Bruto"
+SELECT fac_cab_fecha as "Dia",  fac_cab_monto_bruto as "Bruto", fac_cab
 		FROM 
 		fac_cab 
 		WHERE fac_cab_fecha >= '2016-01-01'
 		AND fac_cab_fecha <= '2016-01-31' ORDER BY fac_cab_fecha DESC
+
+
 
 
 # Ejercicio 3.D
@@ -42,11 +44,6 @@ SELECT fac_cab_fecha as "Dia",  fac_cab_monto_bruto as "Bruto"
 # comisiones por ventas para el mes de Junio del 2016. Las comisiones se pagan sobre el monto bruto de 
 # cada factura. Incluir todos los vendedores (tengan o no ventas en dicho periodo) y tener presente que 
 # el campo vend_porc_comis está en formato 99.99 
-
-
-
-
-
 
 
 
@@ -101,6 +98,16 @@ WHERE
 
 
 
+SELECT * FROM  
+		rubro INNER JOIN articulo on  rubro.rubro_id = articulo.rubro_id
+	          INNER JOIN fac_det on fac_det.fac_det_id = articulo.rubro_id 
+	          INNER JOIN fac_cab on fac_det.fac_det_id = fac_cab.fac_cab_id
+WHERE  fac_cab_fecha >= "2016-01-01" and fac_cab_fecha <= "2016-03-31";
+ 
+ 
+
+ 
+UPDATE articulo SET art_prec_vta = art_prec_vta +(art_prec_vta*0.10)  WHERE  art_stock < art_stock_min;
 
 
 
@@ -172,9 +179,9 @@ cliente INNER JOIN domicilio on cliente.clie_id = domicilio.dom_id
 
 # Ejercicio 3.N
 # Aumentar el precio de los artículos cuya existencia sea menor al stock mínimo. 
-SELECT art_prec_vta as "precio original" , art_prec_vta +100 as "precio actualizado( mas 100 pesos) " FROM articulo WHERE  art_stock < art_stock_min;
 
-
+ 
+UPDATE articulo SET art_prec_vta = art_prec_vta +(art_prec_vta*0.10)  WHERE  art_stock < art_stock_min;
 
 
 
@@ -205,3 +212,6 @@ FROM
 		 INNER JOIN provincia on localidad.prov_id = provincia.prov_id
 
 
+
+
+funciones agregadas
